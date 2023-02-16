@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class ApiRequest : MonoBehaviour
 {
@@ -38,9 +39,26 @@ public class ApiRequest : MonoBehaviour
                     Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+                    string json = webRequest.downloadHandler.text;
+                    //Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+                    WeatherReponse weatherReponse = JsonConvert.DeserializeObject<WeatherReponse>(json);
+                    Debug.Log(weatherReponse.name + " :\nTempérature : " + weatherReponse.main.temp + "°C");
                     break;
             }
         }
+    }
+
+    public class WeatherReponse
+    {
+        public string name { get; set; } 
+        public WeatherMain main { get; set; }
+    }
+
+    public class WeatherMain
+    {
+        public float temp { get; set; }
+        public float feels_like { get; set; }
+        public int pressure { get; set; }
+        public string humidity { get; set; }
     }
 }
