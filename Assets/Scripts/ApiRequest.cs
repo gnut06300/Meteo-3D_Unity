@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine;
 using Newtonsoft.Json;
+using System.IO;
 
 public class ApiRequest : MonoBehaviour
 {
+    private string key;
     // Start is called before the first frame update
     void Start()
     {
+        key = File.ReadAllText(@"Assets\apikey.txt");
         // A correct website page.
-        StartCoroutine(GetRequest("https://api.openweathermap.org/data/2.5/weather?appid=20cc30210e1cd0dfe6f4d7dd7e3de6e5&lat=43.6961&lon=7.27178&units=metric&lang=fr"));
+        string uri = "https://api.openweathermap.org/data/2.5/weather?appid=" + key + "&lat=43.6961&lon=7.27178&units=metric&lang=fr";
+        StartCoroutine(GetRequest(uri));
     }
 
     // Update is called once per frame
