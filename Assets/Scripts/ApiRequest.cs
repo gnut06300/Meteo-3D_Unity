@@ -9,12 +9,6 @@ using UnityEngine.UI;
 
 public class ApiRequest : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI city;
-    [SerializeField] TextMeshProUGUI cityTemp;
-    [SerializeField] TextMeshProUGUI cityTempFells;
-    [SerializeField] TextMeshProUGUI cityPressure;
-    [SerializeField] TextMeshProUGUI cityHumidity;
-    [SerializeField] TextMeshProUGUI cityState;
     private string key;
     // Start is called before the first frame update
     void Start()
