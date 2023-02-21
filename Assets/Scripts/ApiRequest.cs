@@ -44,6 +44,15 @@ public class ApiRequest : MonoBehaviour
         StartCoroutine(GetRequest4Days(uri4Days));
     }
 
+    public void CallApiCity(string cityName)
+    {
+        //string uri = "https://api.openweathermap.org/data/2.5/weather?appid=20cc30210e1cd0dfe6f4d7dd7e3de6e5&q=nice&units=metric&lang=fr";
+        string uri = "https://api.openweathermap.org/data/2.5/weather?appid=" + key + "&q=" + cityName + "&units=metric&lang=fr";
+        string uri4Days = $"https://api.openweathermap.org/data/2.5/forecast?appid={key}&q={cityName}&units=metric&lang=fr";
+        StartCoroutine(GetRequest(uri));
+        StartCoroutine(GetRequest4Days(uri4Days));
+    }
+
     IEnumerator GetRequest(string uri)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
@@ -67,7 +76,7 @@ public class ApiRequest : MonoBehaviour
                     string json = webRequest.downloadHandler.text;
                     //Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
                     WeatherReponse weatherReponse = JsonConvert.DeserializeObject<WeatherReponse>(json);
-                    Debug.Log(weatherReponse.name + " :\nTempérature : " + weatherReponse.main.temp + "°C");
+                    //Debug.Log(weatherReponse.name + " :\nTempérature : " + weatherReponse.main.temp + "°C");
                     string cityName = weatherReponse.name;
                     float tempReponse = weatherReponse.main.temp;
                     float tempFellsReponse = weatherReponse.main.feels_like;
@@ -106,7 +115,7 @@ public class ApiRequest : MonoBehaviour
                     break;
                 case UnityWebRequest.Result.Success:
                     string json = webRequest.downloadHandler.text;
-                    Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+                    //Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
                     WeatherReponse4Days weatherReponse = JsonConvert.DeserializeObject<WeatherReponse4Days>(json);
                     DisplayForecastMeteo(weatherReponse);
                     break;
@@ -119,7 +128,7 @@ public class ApiRequest : MonoBehaviour
         int i = 0;
         foreach(WeatherReponse meteoData4Days in meteoByDay)
         {
-            Debug.Log(meteoData4Days.dateMeteo.ToString("dd/MM/yyyy hh:mm") + " Température :" + meteoData4Days.main.temp + "°C " + meteoData4Days.weather[0].description);
+            //Debug.Log(meteoData4Days.dateMeteo.ToString("dd/MM/yyyy hh:mm") + " Température :" + meteoData4Days.main.temp + "°C " + meteoData4Days.weather[0].description);
             string forescast = meteoData4Days.dateMeteo.ToString("dd/MM/yyyy hh:mm") + " Température : " + meteoData4Days.main.temp + "°C " + meteoData4Days.weather[0].description;
             weatherForecast.ForecastUi(forescast, i);
             i++;
