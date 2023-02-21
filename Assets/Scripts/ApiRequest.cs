@@ -7,6 +7,7 @@ using System.IO;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using System.Linq;
 
 public class ApiRequest : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class ApiRequest : MonoBehaviour
     [SerializeField] TextMeshProUGUI cityPressure;
     [SerializeField] TextMeshProUGUI cityHumidity;
     [SerializeField] TextMeshProUGUI cityState;
+    [SerializeField] WeatherForecast weatherForecast;
     private string key;
 
     // Start is called before the first frame update
@@ -105,11 +107,25 @@ public class ApiRequest : MonoBehaviour
                 case UnityWebRequest.Result.Success:
                     string json = webRequest.downloadHandler.text;
                     Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
-                    WeatherReponse weatherReponse = JsonConvert.DeserializeObject<WeatherReponse>(json);
-                    
+                    WeatherReponse4Days weatherReponse = JsonConvert.DeserializeObject<WeatherReponse4Days>(json);
+                    DisplayForecastMeteo(weatherReponse);
                     break;
             }
         }
+    }
+    public void DisplayForecastMeteo(WeatherReponse4Days meteoData)
+    {
+        List<WeatherReponse> meteoByDay = meteoData.list.Where(meteo => meteo.dateMeteo.Hour == 12).ToList();
+        int i = 0;
+        foreach(WeatherReponse meteoData4Days in meteoByDay)
+        {
+            Debug.Log(meteoData4Days.dateMeteo.ToString("dd/MM/yyyy hh:mm") + " Température :" + meteoData4Days.main.temp + "°C " + meteoData4Days.weather[0].description);
+            string forescast = meteoData4Days.dateMeteo.ToString("dd/MM/yyyy hh:mm") + " Température : " + meteoData4Days.main.temp + "°C " + meteoData4Days.weather[0].description;
+            weatherForecast.ForecastUi(forescast, i);
+            i++;
+            
+        }
+        
     }
     public class WeatherReponse4Days
     {

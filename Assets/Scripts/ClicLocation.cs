@@ -51,6 +51,10 @@ public class ClicLocation : MonoBehaviour
 
         // Use the 2-argument arctangent, which will correctly handle all four quadrants.
         float lon = 90 - Mathf.Atan2(position.x, position.z) * Mathf.Rad2Deg;
+        if (lon > 180f)
+        {
+            lon -= 360f;
+        }
 
         // Here I'm assuming (0, 0, 1) = 0 degrees longitude, and (1, 0, 0) = +90.
         // You can exchange/negate the components to get a different longitude convention.
