@@ -25,9 +25,13 @@ public class ApiRequest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+#if UNITY_EDITOR
         key = File.ReadAllText(@"Assets\apikey.txt");
+#elif UNITY_WEBGL
+        StartCoroutine(GetRequestApiKey("https://gnut.eu/3d_meteo/Assets/apikey.txt"));
+#endif
         // A correct website page.
-        
+
         /*string uri = "https://api.openweathermap.org/data/2.5/weather?appid=" + key + "&lat=43.6961&lon=7.27178&units=metric&lang=fr";
         StartCoroutine(GetRequest(uri));*/
     }
@@ -55,7 +59,32 @@ public class ApiRequest : MonoBehaviour
         StartCoroutine(GetRequest(uri));
         StartCoroutine(GetRequest4Days(uri4Days));
     }
+    IEnumerator GetRequestApiKey(string uri)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
+        {
+            // Request and wait for the desired page.
+            yield return webRequest.SendWebRequest();
 
+            string[] pages = uri.Split('/');
+            int page = pages.Length - 1;
+
+            switch (webRequest.result)
+            {
+                case UnityWebRequest.Result.ConnectionError:
+                case UnityWebRequest.Result.DataProcessingError:
+                    Debug.LogError(pages[page] + ": Error: " + webRequest.error);
+                    break;
+                case UnityWebRequest.Result.ProtocolError:
+                    Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
+                    break;
+                case UnityWebRequest.Result.Success:
+                    Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+                    key = webRequest.downloadHandler.text.Substring(1);
+                    break;
+            }
+        }
+    }
     IEnumerator GetRequest(string uri)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
