@@ -9,6 +9,7 @@ public class SearchCity : MonoBehaviour
     [SerializeField] TMP_InputField searchCity;
     [SerializeField] Button searchButton;
     [SerializeField] ApiRequest apiRequest;
+    [SerializeField] TextMeshProUGUI notCity;
 
     // Start is called before the first frame update
     void Start()
@@ -27,5 +28,17 @@ public class SearchCity : MonoBehaviour
         string city = searchCity.text;
         Debug.Log(city);
         apiRequest.CallApiCity(city);
+        searchCity.text = "";
+    }
+
+    public void NotCity(string cityName)
+    {
+        notCity.gameObject.SetActive(true);
+        notCity.text = "La ville " + cityName + " n'est pas référencé";
+    }
+
+    public void OKCity()
+    {
+        notCity.gameObject.SetActive(false);
     }
 }

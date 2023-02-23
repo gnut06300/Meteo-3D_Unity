@@ -18,6 +18,8 @@ public class ApiRequest : MonoBehaviour
     [SerializeField] TextMeshProUGUI cityHumidity;
     [SerializeField] TextMeshProUGUI cityState;
     [SerializeField] WeatherForecast weatherForecast;
+    [SerializeField] SearchCity searchCity;
+    private string notCitySearch;
     private string key;
 
     // Start is called before the first frame update
@@ -46,6 +48,7 @@ public class ApiRequest : MonoBehaviour
 
     public void CallApiCity(string cityName)
     {
+        notCitySearch = cityName;
         //string uri = "https://api.openweathermap.org/data/2.5/weather?appid=20cc30210e1cd0dfe6f4d7dd7e3de6e5&q=nice&units=metric&lang=fr";
         string uri = "https://api.openweathermap.org/data/2.5/weather?appid=" + key + "&q=" + cityName + "&units=metric&lang=fr";
         string uri4Days = $"https://api.openweathermap.org/data/2.5/forecast?appid={key}&q={cityName}&units=metric&lang=fr";
@@ -89,6 +92,7 @@ public class ApiRequest : MonoBehaviour
                     cityState.text = char.ToUpper(weatherDesc[0]) + weatherDesc.Substring(1);
                     cityPressure.text = "Pression : " + pressureReponse.ToString() + "hPa";
                     cityHumidity.text = "Humidité : " + humidityReponse.ToString() + "%";
+                    searchCity.OKCity();
                     break;
             }
         }
@@ -112,12 +116,14 @@ public class ApiRequest : MonoBehaviour
                     break;
                 case UnityWebRequest.Result.ProtocolError:
                     Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
+                    searchCity.NotCity(notCitySearch);
                     break;
                 case UnityWebRequest.Result.Success:
                     string json = webRequest.downloadHandler.text;
                     //Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
                     WeatherReponse4Days weatherReponse = JsonConvert.DeserializeObject<WeatherReponse4Days>(json);
                     DisplayForecastMeteo(weatherReponse);
+                    searchCity.OKCity();
                     break;
             }
         }
