@@ -10,15 +10,8 @@ using System.Linq;
 
 public class ApiRequest : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI city;
-    [SerializeField] TextMeshProUGUI cityTemp;
-    [SerializeField] TextMeshProUGUI cityTempFells;
-    [SerializeField] TextMeshProUGUI cityPressure;
-    [SerializeField] TextMeshProUGUI cityHumidity;
-    [SerializeField] TextMeshProUGUI cityState;
     [SerializeField] WeatherForecast weatherForecast;
     [SerializeField] SearchCity searchCity;
-    [SerializeField] GameObject weather;
     private string notCitySearch;
     private string key;
 
@@ -59,6 +52,7 @@ public class ApiRequest : MonoBehaviour
         StartCoroutine(GetRequest(uri));
         StartCoroutine(GetRequest4Days(uri4Days));
     }
+
     IEnumerator GetRequestApiKey(string uri)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
@@ -115,14 +109,7 @@ public class ApiRequest : MonoBehaviour
                     string weatherDesc = weatherReponse.weather[0].description;
                     int pressureReponse = weatherReponse.main.pressure;
                     int humidityReponse = weatherReponse.main.humidity;
-                    weather.SetActive(true);
-                    city.text = cityName.Length == 0 ? "" : "Ville : " + cityName;
-                    cityTemp.text = "Température : " + tempReponse.ToString("0.00") + "°C";
-                    cityTempFells.text = "Température ressentie : " + tempFellsReponse.ToString("0.00") + "°C";
-                    cityState.text = char.ToUpper(weatherDesc[0]) + weatherDesc.Substring(1);
-                    cityPressure.text = "Pression : " + pressureReponse.ToString() + "hPa";
-                    cityHumidity.text = "Humidité : " + humidityReponse.ToString() + "%";
-                    searchCity.OKCity();
+                    weatherForecast.WeatherActuel(cityName, tempReponse, tempFellsReponse, weatherDesc, pressureReponse, humidityReponse);
                     break;
             }
         }

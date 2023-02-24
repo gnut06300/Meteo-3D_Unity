@@ -1923,15 +1923,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b60be892185b9d4bb0dcf464c1b17a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  city: {fileID: 753093797}
-  cityTemp: {fileID: 2098664313}
-  cityTempFells: {fileID: 1472503037}
-  cityPressure: {fileID: 942775790}
-  cityHumidity: {fileID: 1419114691}
-  cityState: {fileID: 67098054}
   weatherForecast: {fileID: 1318179007}
   searchCity: {fileID: 1318179008}
-  weather: {fileID: 112416336}
 --- !u!114 &1318179000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2053,6 +2046,14 @@ MonoBehaviour:
   - {fileID: 260199533}
   - {fileID: 1529392968}
   forecastFond: {fileID: 89162842}
+  city: {fileID: 753093797}
+  cityTemp: {fileID: 2098664313}
+  cityTempFells: {fileID: 1472503037}
+  cityPressure: {fileID: 942775790}
+  cityHumidity: {fileID: 1419114691}
+  cityState: {fileID: 67098054}
+  weather: {fileID: 112416336}
+  searchCity: {fileID: 1318179008}
 --- !u!114 &1318179008
 MonoBehaviour:
   m_ObjectHideFlags: 0
