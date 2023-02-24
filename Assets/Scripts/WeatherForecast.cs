@@ -6,6 +6,7 @@ using UnityEngine;
 public class WeatherForecast : MonoBehaviour
 {
     public TextMeshProUGUI[] forecasts;
+    [SerializeField] GameObject forecastFond;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,7 @@ public class WeatherForecast : MonoBehaviour
 
     public void ForecastUi(string forecast, int i)
     {
+        forecastFond.SetActive(true);
         forecasts[i].text = forecast;
     }
 }

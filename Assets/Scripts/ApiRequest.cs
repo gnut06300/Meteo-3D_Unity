@@ -5,7 +5,6 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.IO;
 using TMPro;
-using UnityEngine.UI;
 using System;
 using System.Linq;
 
@@ -19,6 +18,7 @@ public class ApiRequest : MonoBehaviour
     [SerializeField] TextMeshProUGUI cityState;
     [SerializeField] WeatherForecast weatherForecast;
     [SerializeField] SearchCity searchCity;
+    [SerializeField] GameObject weather;
     private string notCitySearch;
     private string key;
 
@@ -115,7 +115,8 @@ public class ApiRequest : MonoBehaviour
                     string weatherDesc = weatherReponse.weather[0].description;
                     int pressureReponse = weatherReponse.main.pressure;
                     int humidityReponse = weatherReponse.main.humidity;
-                    city.text = "Ville : " + cityName;
+                    weather.SetActive(true);
+                    city.text = cityName.Length == 0 ? "" : "Ville : " + cityName;
                     cityTemp.text = "Température : " + tempReponse.ToString("0.00") + "°C";
                     cityTempFells.text = "Température ressentie : " + tempFellsReponse.ToString("0.00") + "°C";
                     cityState.text = char.ToUpper(weatherDesc[0]) + weatherDesc.Substring(1);
@@ -164,7 +165,7 @@ public class ApiRequest : MonoBehaviour
         foreach(WeatherReponse meteoData4Days in meteoByDay)
         {
             //Debug.Log(meteoData4Days.dateMeteo.ToString("dd/MM/yyyy hh:mm") + " Température :" + meteoData4Days.main.temp + "°C " + meteoData4Days.weather[0].description);
-            string forescast = meteoData4Days.dateMeteo.ToString("dd/MM/yyyy hh:mm") + " Température : " + meteoData4Days.main.temp + "°C " + meteoData4Days.weather[0].description;
+            string forescast = meteoData4Days.dateMeteo.ToString("dd/MM/yy") + " Température : " + meteoData4Days.main.temp + "°C " + meteoData4Days.weather[0].description;
             weatherForecast.ForecastUi(forescast, i);
             i++;
             

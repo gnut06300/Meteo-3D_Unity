@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class SearchCity : MonoBehaviour
@@ -15,12 +16,21 @@ public class SearchCity : MonoBehaviour
     void Start()
     {
         searchButton.onClick.AddListener(GetCity);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void ValidEnter(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            GetCity();
+        }
     }
     
     public void GetCity()
